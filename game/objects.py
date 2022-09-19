@@ -63,3 +63,23 @@ class Die:
     # Lanzamiento promedio del mejor de dos dados
     def avgRollAdvantage(self):
         return (4*self.__faces*self.__faces + 3*self.__faces - 1.)/(6*self.__faces)
+    
+    def avgRollElvenAccuracy(self):
+        return 0 # TODO: Buscar la fórmula matemática para esto
+
+    # Lógica para decidir el tipo de lanzamiento
+    def decideAvgRoll(self, **kwargs):
+        advantage = kwargs.get('advantage', False)
+        disadvantage = kwargs.get('disadvantage', False)
+        elvenAccuracy = kwargs.get('elvenAccuracy', False)
+        if not advantage and not disadvantage:
+            return self.avgRoll()
+        elif advantage and not disadvantage:
+            if elvenAccuracy:
+                return self.avgRollElvenAccuracy()
+            else:
+                return self.avgRollAdvantage()
+        elif not advantage and disadvantage:
+            return self.avgRollDisadvantage()
+        else:
+            return self.avgRoll()
