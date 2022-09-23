@@ -1,0 +1,28 @@
+{
+  "name": "Honest Work",
+  "type": "money",
+  "steps": [
+    {
+      "id": "expenditure",
+      "days": 5,
+      "gold": 5
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["athletics", "acrobatics", "tool", "performance", "instrument"],
+      "advantage": ["acolyte", "athlete", "cityWatch", "clanCrafter", "entertainer",
+        "fisher", "guildArtisan", "mercenaryVeteran", "sailor", "shipwright"]
+    },
+    {
+      "id": "reward",
+      "type": "lookUpTable",
+      "lookUpTable": {
+          "-1": 3,
+          "15": 4,
+          "21": 5,
+          "26": 8 
+      },
+      "multiplicator": "day"
+    }
+  ]
+}

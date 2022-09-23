@@ -1,0 +1,41 @@
+{
+  "name": "Shady Brawl",
+  "type": "money",
+  "steps": [
+    {
+      "id": "expenditure",
+      "days": 5,
+      "gold": 5
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["athletics"]
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["acrobatics"]
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["constitution"],
+      "bonus": ["maxHitDie"]
+    },
+    {
+      "id": "cheat",
+      "skillCheck": ["weaponAttack"],
+      "bonus": ["hitDie"],
+      "time": "before"
+    },
+    {
+      "id": "reward",
+      "type": "difficultyClass",
+      "difficultyClass": {
+          "0": 0,
+          "1": 50,
+          "2": 100,
+          "3": 200 
+      },
+      "multiplicator": "global"
+    }
+  ]
+}

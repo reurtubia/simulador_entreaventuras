@@ -1,6 +1,7 @@
 import json
 import math
 import numpy as np
+import os
 
 class Die:
     """
@@ -512,3 +513,18 @@ class Character:
             if die.faces >= faces:
                 faces = die.faces
         return Die(faces)
+
+class Adventure:
+
+    ### Initializer ###
+    def __init__(self):
+        self.__dataPath = os.path.join(os.path.dirname(__file__), '..', 'data', 'adventures')
+
+    ### Métodos de la Clase ###
+    # Carga el personaje desde un json
+    def loadAdventure(self, name, actor):
+        path = os.path.join(self.__dataPath, name)
+        with open(path, 'r', encoding = 'utf8') as fcc_file:
+            data = json.load(fcc_file)
+            import IPython as ipy
+            ipy.embed()

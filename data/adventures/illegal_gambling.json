@@ -1,0 +1,55 @@
+{
+  "name": "Illegal Gambling",
+  "type": "money",
+  "steps": [
+    {
+      "id": "expenditure",
+      "days": 5,
+      "gold": 5
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["insight"],
+      "uniqueBonus": {
+        "requires": "game",
+        "bonus": ["proficiency"]
+      }
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["deception"],
+      "uniqueBonus": {
+        "requires": "game",
+        "bonus": ["proficiency"]
+      }
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["intimidation"],
+      "uniqueBonus": {
+        "requires": "game",
+        "bonus": ["proficiency"]
+      }
+    },
+    {
+      "id": "cheat",
+      "skillCheck": ["sleightOfHand"],
+      "uniqueBonus": {
+        "requires": "game",
+        "bonus": ["proficiency"]
+      },
+      "time": "after"
+    },
+    {
+      "id": "reward",
+      "type": "difficultyClass",
+      "difficultyClass": {
+          "0": 0,
+          "1": 0.5,
+          "2": 1.5,
+          "3": 2 
+      },
+      "multiplicator": "input"
+    }
+  ]
+}
