@@ -198,14 +198,15 @@ class Skill:
         kwargs:
             advantage (bool): Es True si tiene alguna fuente de ventaja, False en otro caso
             disadvantage (bool): Es True si tiene alguna fuente de desventaja, False en otro caso
-            elvenAccuracy (): Es True si tiene el rasgo de elvenAccuracy
+            elvenAccuracy (bool): Es True si tiene el rasgo de elvenAccuracy
+            extraBonuses (list): Lista de bonos, pueden ser enteros o dados
 
         Returns:
             float: Número del check promedio
         """
 
         # Tirada de d20
-        roll = Die(20).decideAvgRoll()
+        roll = Die(20).decideAvgRoll(**kwargs)
 
         # TODO: Agregar modificadores debido a subclase (eloquence, inquisitive, etc)
 
