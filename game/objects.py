@@ -3,7 +3,7 @@ import numpy as np
 class Die:
     """
     Clase que representa un dado.
-    - Su único atributo es la cantidad de caras.
+    - Su único atributo es la cantidad de caras
     - Tiene métodos para realizar lanzamientos activos
     - Tiene métodos para obtener el promedio de algunos lanzamientos
     """
@@ -13,7 +13,7 @@ class Die:
         self.__faces = faces
 
     def __str__(self):
-        return f'{self.__faces} sided die'
+        return f'd{self.__faces}'
 
     ### Getters & Setters ###
     def __get_faces(self): return self.__faces
@@ -87,3 +87,44 @@ class Die:
         else:
             return self.avgRoll()
 
+class Dice:
+    """
+    Clase que representa un grupo de dados.
+    - Tiene una lista con los dados
+    - Tiene una lista con los bonos
+    - Tiene métodos para realizar lanzamientos activos
+    - Tiene métodos para obtener el promedio de algunos lanzamientos
+    """
+
+    ### Initializer ###
+    def __init__(self, diceString):
+        self.__dice = list()
+        self.__bonuses = 0
+        strings = diceString.split('+')
+        for string in strings:
+            # Si tiene la d es un dado
+            if 'd' in string:
+                ammount, faces = string.split('d')
+                for i in range(int(ammount)):
+                    self.__dice.append(Die(int(faces)))
+            else:
+                self.__bonuses += int(string)
+
+    def __str__(self):
+        dice = [f'1d{die.faces}' for die in self.__dice]
+        return f'{"+".join(dice)}+{self.__bonuses}'
+
+    ### Class Methods ###
+    # Lanza todos los dados
+    def roll(self, **kwargs):
+        roll = self.__bonuses
+        for die in self.__dice:
+            roll += die.decideRoll(**kwargs)
+        return roll
+
+    # Calcula el promedio de los dados
+    def avgRoll(self, **kwargs):
+        roll = self.__bonuses
+        for die in self.__dice:
+            roll += die.decideAvgRoll(**kwargs)
+        return roll
