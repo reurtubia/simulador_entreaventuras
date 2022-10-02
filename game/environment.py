@@ -226,7 +226,7 @@ chr_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'characters', '
 chr = Character(chr_path)
 
 adv = Adventure()
-apuesta100 = adv.loadAdventure("shady_brawl.json", chr, apuesta=100)
+apuesta100 = adv.loadAdventure("street_fighting.json", chr, apuesta=100)
 datos = adv.executeMoneyAdventure(apuesta100, 1000)
 import IPython as ipy
 ipy.embed()
