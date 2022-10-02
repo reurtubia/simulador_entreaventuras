@@ -136,7 +136,7 @@ class Adventure:
                     df_afterCheats = df_afterCheats.sort_values(by=['average'], ascending=False)
                     df_afterCheats = df_afterCheats.reset_index(drop=True)
                     if len(df_afterCheats) > replacements:
-                        df_afterCheats = df_afterCheats.loc[0:replacements]
+                        df_afterCheats = df_afterCheats.iloc[0:replacements]
                         replacements -= replacements
                     else:
                         replacements -= len(df_afterCheats)
@@ -222,11 +222,17 @@ class Adventure:
         df_summary = pd.DataFrame(rows_summary)
         return df_summary, df_detail
 
-chr_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'characters', 'fvtt-Actor-edward-genkov.json')
+chr_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'characters', 'fvtt-Actor-shrej-klock.json')
 chr = Character(chr_path)
 
 adv = Adventure()
-apuesta100 = adv.loadAdventure("street_fighting.json", chr, apuesta=100)
-datos = adv.executeMoneyAdventure(apuesta100, 1000)
+'''apuesta500 = adv.loadAdventure("illegal_gambling.json", chr, apuesta=500)
+datos_apuesta = adv.executeMoneyAdventure(apuesta500, 1000)
+pelea = adv.loadAdventure("street_fighting.json", chr)
+datos_pelea = adv.executeMoneyAdventure(pelea, 1000)'''
+investigacion = adv.loadAdventure("private_investigations.json", chr)
+datos_investigacion = adv.executeMoneyAdventure(investigacion, 1000)
+'''trabajo = adv.loadAdventure("honest_work.json", chr)
+datos_trabajo = adv.executeMoneyAdventure(trabajo, 1000)'''
 import IPython as ipy
 ipy.embed()
