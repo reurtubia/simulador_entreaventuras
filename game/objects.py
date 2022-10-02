@@ -424,6 +424,38 @@ class Character:
             return self.__skills['ath']
     weaponAttack = property(__get_weaponAttack)
 
+    def skills(self, skill):
+        checks = dict()
+        checks['acrobatics'] = self.acrobatics
+        checks['animalHandling'] = self.animalHandling
+        checks['arcana'] = self.arcana
+        checks['athletics'] = self.athletics
+        checks['deception'] = self.deception
+        checks['history'] = self.history
+        checks['insight'] = self.insight
+        checks['intimidation'] = self.intimidation
+        checks['investigation'] = self.investigation
+        checks['medicine'] = self.medicine
+        checks['nature'] = self.nature
+        checks['perception'] = self.perception
+        checks['performance'] = self.performance
+        checks['persuasion'] = self.persuasion
+        checks['religion'] = self.religion
+        checks['sleightOfHand'] = self.sleightOfHand
+        checks['stealth'] = self.stealth
+        checks['survival'] = self.survival
+        checks['strength'] = self.strength
+        checks['dexterity'] = self.dexterity
+        checks['constitution'] = self.constitution
+        checks['intelligence'] = self.intelligence
+        checks['wisdom'] = self.wisdom
+        checks['charisma'] = self.charisma
+        checks['tool'] = self.tool
+        checks['instrument'] = self.instrument
+        checks['gamingSet'] = self.gamingSet
+        checks['weaponAttack'] = self.weaponAttack
+        return checks[skill]
+
     ### Métodos de la Clase ###
     # Carga el personaje desde un json
     def loadCharacter(self, path):
