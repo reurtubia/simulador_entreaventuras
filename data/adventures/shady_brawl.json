@@ -1,6 +1,7 @@
 {
   "name": "Shady Brawl",
   "type": "money",
+  "replacements": 1,
   "steps": [
     {
       "id": "expenditure",
@@ -23,12 +24,12 @@
     {
       "id": "cheat",
       "skillCheck": ["weaponAttack"],
-      "bonus": ["hitDie"],
       "time": "before"
     },
     {
       "id": "reward",
       "type": "difficultyClass",
+      "gauge": "success",
       "difficultyClass": {
           "0": 0,
           "1": 50,
