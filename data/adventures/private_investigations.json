@@ -1,0 +1,49 @@
+{
+  "name": "Private investigations",
+  "type": "money",
+  "replacements": 1,
+  "steps": [
+    {
+      "id": "expenditure",
+      "days": 10,
+      "gold": 60
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["persuasion"]
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["insight"]
+    },
+    {
+      "id": "challenge",
+      "skillCheck": ["investigation"]
+    },
+    {
+      "id": "cheat",
+      "skillCheck": ["deception"],
+      "time": "after"
+    },
+    {
+      "id": "cheat",
+      "skillCheck": ["stealth"],
+      "time": "after"
+    },
+    {
+      "id": "reward",
+      "type": {
+        "gauge": "success",
+        "dice": "2d10+5",
+        "ammount": 3
+      },
+      "difficultyClass": {
+          "0": 0,
+          "1": 100,
+          "2": 200,
+          "3": 300 
+      },
+      "multiplicator": "global"
+    }
+  ]
+}
