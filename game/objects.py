@@ -15,6 +15,9 @@ class Die:
     def __init__(self, faces):
         self.__faces = faces
 
+    def __str__(self):
+        return f'{self.__faces} sided die'
+
     ### Getters & Setters ###
     def __get_faces(self): return self.__faces
     faces = property(__get_faces)
@@ -113,6 +116,9 @@ class Skill:
         self.__bonuses = list()
         self.__bonuses += kwargs.get('bonuses', [])
         self.__proficient = kwargs.get('proficient', 'not')
+
+    def __str__(self):
+        return f'{self.__name} @ {self.__actor.name.split()[0]}'
 
     ### Getters & Setters ###
     def __get_name(self): return self.__name
@@ -335,6 +341,9 @@ class Character:
         self.__abilityScores = dict()
         self.__skills = dict()
         self.loadCharacter(path)
+
+    def __str__(self):
+        return f'{self.__name} @ Level {self.__level}'
 
     ### Getters & Setters ###
     # Atributos
