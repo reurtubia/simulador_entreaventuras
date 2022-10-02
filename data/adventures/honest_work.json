@@ -15,8 +15,10 @@
     },
     {
       "id": "reward",
-      "type": "difficultyClass",
-      "gauge": "maxValue",
+      "type": {
+        "gauge": "maxValue",
+        "ammount": 1
+      },
       "difficultyClass": {
           "-1": 3,
           "15": 4,

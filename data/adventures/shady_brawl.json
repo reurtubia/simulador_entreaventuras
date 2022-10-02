@@ -28,8 +28,11 @@
     },
     {
       "id": "reward",
-      "type": "difficultyClass",
-      "gauge": "success",
+      "type": {
+        "gauge": "success",
+        "dice": "2d10+5",
+        "ammount": 3
+      },
       "difficultyClass": {
           "0": 0,
           "1": 50,
