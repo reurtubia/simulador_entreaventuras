@@ -100,6 +100,7 @@ class Dice:
     def __init__(self, diceString):
         self.__dice = list()
         self.__bonuses = 0
+        self.__string = diceString
         strings = diceString.split('+')
         for string in strings:
             # Si tiene la d es un dado
@@ -111,8 +112,7 @@ class Dice:
                 self.__bonuses += int(string)
 
     def __str__(self):
-        dice = [f'1d{die.faces}' for die in self.__dice]
-        return f'{"+".join(dice)}+{self.__bonuses}'
+        return self.__string
 
     ### Class Methods ###
     # Lanza todos los dados
