@@ -1,9 +1,11 @@
 import json
 import os
 
+import numpy as np
 import pandas as pd
 
 from characters import Character
+from objects import Dice
 
 class Adventure:
 
@@ -49,7 +51,21 @@ class Adventure:
                     for key, value in prize['difficultyClass'].items():
                         earningsTable[int(key)] = value - cost['gold']
                 cookedAdventure['prizes'] = earningsTable
-                cookedAdventure['comparison'] = prize['gauge']
+                
+                # Prepara las tiradas enfrentadas
+                if prize['type']['gauge'] == 'success':
+                    cookedAdventure['comparison'] = {
+                        'rollsDice': True,
+                        'dice': Dice(prize['type']['dice']),
+                        'ammount': prize['type']['ammount'],
+                        'days': cost['days']
+                    }
+                elif prize['type']['gauge'] == 'maxValue':
+                    cookedAdventure['comparison'] = {
+                        'rollsDice': False,
+                        'ammount': prize['type']['ammount'],
+                        'days': cost['days']
+                    }
 
                 # Cada roll es una tirada enfrentada
                 bestRolls = list()
@@ -71,6 +87,8 @@ class Adventure:
                     avgRolls = list()
                     for skill in roll['skillCheck']:
                         avgRoll = dict()
+                        avgRoll['actorName'] = actor.name
+                        avgRoll['skillName'] = skill
                         avgRoll['behavior'] = skillBehavior
                         avgRoll['timing'] = cheatTiming
                         avgRoll['advantage'] = advantage
@@ -142,11 +160,73 @@ class Adventure:
                 cookedAdventure['rolls'] = df_selectedRolls
                 cookedAdventure['jokers'] = df_afterCheats
                 return cookedAdventure
-                
+
+    # Ejecuta una aventura de dinero un número arbitrario de veces
+    def executeMoneyAdventure(self, cookedAdventure, cycles):
+        np.random.seed(33)
+        df_detail = pd.DataFrame()
+        rows_summary = list()
+        # Cada ciclo es una aventura
+        for i in range(cycles):
+            df_rolls = cookedAdventure['rolls']
+            df_rolls['cooked'] = [list(x) for x in zip(df_rolls['advantage'], df_rolls['bonus'], df_rolls['skill'])]
+            df_rolls['roll'] = np.where(
+                True, 
+                df_rolls.cooked.map(lambda x: x[2].check(
+                        advantage=x[0],
+                        extraBonuses=x[1])).values,
+                None
+            )
+
+            df_jokers = cookedAdventure['jokers']
+            df_jokers['cooked'] = [list(x) for x in zip(df_jokers['advantage'], df_jokers['bonus'], df_jokers['skill'])]
+            df_jokers['roll'] = np.where(
+                True, 
+                df_jokers.cooked.map(lambda x: x[2].check(
+                        advantage=x[0],
+                        extraBonuses=x[1])).values,
+                None
+            )
+
+            df_adventure = pd.concat([df_rolls, df_jokers])
+            df_adventure.sort_values(by=['roll'], ascending=False, inplace=True)
+            df_adventure = df_adventure[['actorName', 'skillName', 'bonus', 'advantage', 'roll']]
+            
+            # Se toman los mejores dados
+            size = cookedAdventure['comparison']['ammount']
+            df_adventure = df_adventure.iloc[0:size]
+            if cookedAdventure['comparison']['rollsDice']:
+                df_adventure['difficulty'] = cookedAdventure['comparison']['dice']
+                df_adventure['DC'] = np.where(
+                    True, 
+                    df_adventure.difficulty.map(lambda x: x.roll()),
+                    None
+                )
+                df_adventure.drop(axis=1, columns=['difficulty'], inplace=True)
+                successes = len(df_adventure.loc[df_adventure['roll'] >= df_adventure['DC']])
+                money = cookedAdventure['prizes'][successes]
+
+                df_detail = pd.concat([df_detail, df_adventure])
+                rows_summary.append({'successes': successes, 'money': money, 'days': cookedAdventure['comparison']['days']})
+            else:
+                sum = df_adventure['roll'].sum()
+                money = 0
+                for DC, gold in cookedAdventure['prizes'].items():
+                    if sum >= DC and gold > money:
+                        money = gold
+
+                df_detail = pd.concat([df_detail, df_adventure])
+                rows_summary.append({'roll': sum, 'money': money, 'days': cookedAdventure['comparison']['days']})
+        
+        df_detail = df_detail.reset_index(drop=True)
+        df_summary = pd.DataFrame(rows_summary)
+        return df_summary, df_detail
+
 chr_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'characters', 'fvtt-Actor-edward-genkov.json')
 chr = Character(chr_path)
 
 adv = Adventure()
-cuy = adv.loadAdventure("illegal_gambling.json", chr, apuesta=100)
+apuesta100 = adv.loadAdventure("shady_brawl.json", chr, apuesta=100)
+datos = adv.executeMoneyAdventure(apuesta100, 1000)
 import IPython as ipy
 ipy.embed()
