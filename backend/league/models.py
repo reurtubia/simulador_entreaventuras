@@ -10,6 +10,7 @@ class Adventure(Auditable):
 class AdventureLog(Auditable):
     adventure = models.ForeignKey(Adventure, blank=False, null=False, on_delete=models.CASCADE)
     characterprogression = models.ForeignKey(CharacterProgression, blank=False, null=False, on_delete=models.CASCADE)
-    skillname = models.ForeignKey(Skill, blank=False, null=False, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, blank=False, null=False, on_delete=models.CASCADE)
     difficultyclass = models.IntegerField(null=True, blank=True)
     roll = models.IntegerField(null=False, blank=False)
+    success = models.BooleanField(null=True, blank=True)
