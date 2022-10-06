@@ -67,13 +67,13 @@ class Skill:
 
         # Bonificaciones de subclase
         if 'Inquisitive' in self.__actor.subclasses and self.__name == 'insight':
-            if self.__actor.subclasses['Inquisitive'] >= 3:
+            if self.__actor.subclasses['Inquisitive']['level'] >= 3:
                 if roll <= 8: roll = 8
         if 'College of Eloquence' in self.__actor.subclasses and (self.__name == 'deception' or self.__name == 'persuasion'):
-            if self.__actor.subclasses['College of Eloquence'] >= 3:
+            if self.__actor.subclasses['College of Eloquence']['level'] >= 3:
                 if roll <= 10: roll = 10
         if 'Fey Wanderer' in self.__actor.subclasses and self.__abilityScore == 'cha':
-            if self.__actor.subclasses['Fey Wanderer'] >= 3:
+            if self.__actor.subclasses['Fey Wanderer']['level'] >= 3:
                 wisMod = self.__actor.getMod('wis')
                 if wisMod < 1:
                     roll += 1
@@ -394,8 +394,10 @@ class Character:
                         if item['name'] in self.__classes:
                             classLevel = item['data']['levels']
                             subclass = item['data']['subclass']
+                            if subclass == '':
+                                subclass = 'No Subclass'
                             self.__level += classLevel
-                            self.__subclasses[subclass] = classLevel
+                            self.__subclasses[subclass] = {'level': classLevel, 'class': item['name']}
                             dado = item['data']['hitDice']
                             dado = Die(int(dado[1:]))
                             for i in range(0, classLevel):
