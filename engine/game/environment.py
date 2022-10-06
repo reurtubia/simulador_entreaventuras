@@ -122,9 +122,15 @@ class Adventure:
                                 if bonus == 'proficiency':
                                     bonuses.append(actor.proficiency)
                             if not df_bestRolls.loc[df_bestRolls.behavior == 'cheat'].empty:
-                                df_bestRolls.loc[df_bestRolls.behavior == 'cheat'].iloc[0].bonus += (bonuses)
+                                row = df_bestRolls.loc[df_bestRolls.behavior == 'cheat'].iloc[0]
+                                row.bonus += (bonuses)
+                                df_bestRolls.at[row.name, 'average'] = row.skill.avgRoll(
+                                    advantage=row.advantage, extraBonuses=row.bonus)
                             else:
-                                df_bestRolls.iloc[-1].bonus += (bonuses)
+                                row = df_bestRolls.iloc[-1]
+                                row.bonus += (bonuses)
+                                df_bestRolls.at[row.name, 'average'] = row.skill.avgRoll(
+                                    advantage=row.advantage, extraBonuses=row.bonus)
                     elif False: # Aquí poner futuros bonos
                         pass
 
@@ -199,7 +205,18 @@ class Adventure:
                 None
             )
 
-            df_adventure = pd.concat([df_rolls, df_jokers]) # TODO: Implementar trampa correctamente
+            # Evalúa si reemplazar una tirada
+            df_rolls = df_rolls.sort_values(by=['roll'], ascending=True)
+            df_jokers = df_jokers.sort_values(by=['average'], ascending=False)
+            for index in range(len(df_jokers)):
+                if df_rolls.iloc[0].roll < df_jokers.iloc[0].average:
+                    df_rolls.drop(0, inplace=True)
+                    df_rolls = pd.concat([df_rolls, df_jokers.iloc[[0]]])
+                    df_jokers.drop(0, inplace=True)
+                else:
+                    break
+
+            df_adventure = df_rolls
             df_adventure.sort_values(by=['roll'], ascending=False, inplace=True)
             df_adventure = df_adventure[['actorName', 'skillName', 'bonus', 'advantage', 'roll']]
             
