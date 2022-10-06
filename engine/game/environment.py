@@ -34,6 +34,7 @@ class Adventure:
             
             if type == 'money':
                 cookedAdventure = dict()
+                cookedAdventure['name'] = data['name']
                 cost = actions['cost']
                 rolls = actions['rolls']
                 prize = actions['prize']
@@ -162,9 +163,18 @@ class Adventure:
                 cookedAdventure['jokers'] = df_afterCheats
                 return cookedAdventure
 
+    # Carga el personaje desde un json
+    def loadCharacter(self, name):
+        for filename in os.listdir(self.__characterPath):
+            if name == filename:
+                path = os.path.join(self.__characterPath, filename)
+                character = Character(path)   
+                return character
+        return None # TODO: raise error
+
     # Ejecuta una aventura de dinero un número arbitrario de veces
     def executeMoneyAdventure(self, cookedAdventure, cycles):
-        np.random.seed(33)
+        #np.random.seed(33)
         df_detail = pd.DataFrame()
         rows_summary = list()
         # Cada ciclo es una aventura
@@ -227,18 +237,3 @@ class Adventure:
         df_detail = df_detail.reset_index(drop=True)
         df_summary = pd.DataFrame(rows_summary)
         return df_summary, df_detail
-
-chr_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'characters', 'fvtt-Actor-shrej-klock.json')
-chr = Character(chr_path)
-
-adv = Adventure()
-'''apuesta500 = adv.loadAdventure("illegal_gambling.json", chr, apuesta=500)
-datos_apuesta = adv.executeMoneyAdventure(apuesta500, 1000)
-pelea = adv.loadAdventure("street_fighting.json", chr)
-datos_pelea = adv.executeMoneyAdventure(pelea, 1000)'''
-investigacion = adv.loadAdventure("private_investigations.json", chr)
-datos_investigacion = adv.executeMoneyAdventure(investigacion, 1000)
-'''trabajo = adv.loadAdventure("honest_work.json", chr)
-datos_trabajo = adv.executeMoneyAdventure(trabajo, 1000)'''
-import IPython as ipy
-ipy.embed()
