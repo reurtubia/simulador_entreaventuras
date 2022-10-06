@@ -3,6 +3,9 @@
 import os
 import sys
 
+# Path módulo global
+pathSimulador = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
+sys.path.append(pathSimulador)
 
 def main():
     """Run administrative tasks."""

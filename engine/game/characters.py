@@ -1,7 +1,7 @@
 import json
 import math
 
-from objects import Die
+from engine.game.objects import Die
 
 class Skill:
     """

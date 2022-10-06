@@ -4,19 +4,20 @@ import os
 import numpy as np
 import pandas as pd
 
-from characters import Character
-from objects import Dice
+from engine.game.characters import Character
+from engine.game.objects import Dice
 
 class Adventure:
 
     ### Initializer ###
     def __init__(self):
-        self.__dataPath = os.path.join(os.path.dirname(__file__), '..', 'data', 'adventures')
+        self.__adventurePath = os.path.join(os.path.dirname(__file__), '..', 'data', 'adventures')
+        self.__characterPath = os.path.join(os.path.dirname(__file__), '..', 'data', 'characters')
 
     ### Métodos de la Clase ###
-    # Carga el personaje desde un json
+    # Carga la aventura desde un json
     def loadAdventure(self, name, actor, **kwargs):
-        path = os.path.join(self.__dataPath, name)
+        path = os.path.join(self.__adventurePath, name)
         with open(path, 'r', encoding = 'utf8') as fcc_file:
             data = json.load(fcc_file)
             type = data['type']
