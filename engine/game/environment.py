@@ -199,7 +199,7 @@ class Adventure:
                 None
             )
 
-            df_adventure = pd.concat([df_rolls, df_jokers])
+            df_adventure = pd.concat([df_rolls, df_jokers]) # TODO: Implementar trampa correctamente
             df_adventure.sort_values(by=['roll'], ascending=False, inplace=True)
             df_adventure = df_adventure[['actorName', 'skillName', 'bonus', 'advantage', 'roll']]
             
