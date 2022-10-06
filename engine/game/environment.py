@@ -203,7 +203,12 @@ class Adventure:
                     None
                 )
                 df_adventure.drop(axis=1, columns=['difficulty'], inplace=True)
-                successes = len(df_adventure.loc[df_adventure['roll'] >= df_adventure['DC']])
+                df_adventure['success'] = np.where(
+                    df_adventure['roll'].values >= df_adventure['DC'].values,
+                    True,
+                    False
+                )
+                successes = len(df_adventure.loc[df_adventure['success']])
                 money = cookedAdventure['prizes'][successes]
 
                 df_detail = pd.concat([df_detail, df_adventure])
