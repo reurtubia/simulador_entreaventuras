@@ -46,7 +46,7 @@ class CharacterProgression(Auditable):
         unique_together = ('character', 'level')
 
     def __str__(self):
-        return f'{self.character__name} @ {self.level}'
+        return f'{self.character} @ {self.level}'
 
 # Conecta las subclases con los personajes
 class Multiclass(Auditable):
