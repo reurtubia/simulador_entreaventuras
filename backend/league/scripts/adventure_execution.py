@@ -14,7 +14,7 @@ def run():
     data = adventureManager.executeMoneyAdventure(adventure, 1000)
 
     characterName = character.name
-    objCharacter = Character.objects.get_or_create(
+    objCharacter, _ = Character.objects.get_or_create(
         name=characterName,
         player=player
     )
@@ -26,13 +26,13 @@ def run():
         level += info['level']
         subclasses[subclass] = info['level']
         classes[subclass] = info['class']
-        objClass = DnDClass.objects.get_or_create(name=info['class'])
-        objSubclass = DnDSubclass.objects.get_or_create(
+        objClass, _ = DnDClass.objects.get_or_create(name=info['class'])
+        objSubclass, _ = DnDSubclass.objects.get_or_create(
             name=subclass,
             dndclass=objClass
         )
 
-    objProgression = CharacterProgression.objects.get_or_create(
+    objProgression, _ = CharacterProgression.objects.get_or_create(
         character=objCharacter,
         level=level
     )
@@ -44,20 +44,24 @@ def run():
             name=subclass,
             dndclass=objClass
         )
-        objMulticlass = Multiclass.objects.get_or_create(
+        objMulticlass, _ = Multiclass.objects.get_or_create(
             characterprogression=objProgression,
             dndsubclass=objSubclass,
             level=subclasses[subclass]
         )
 
-    objAdventure = Adventure.objects.get_or_create(name=adventure['name'])
+    objAdventure, _ = Adventure.objects.get_or_create(name=adventure['name'])
 
     df_detail = data[1]
+    progress = 0
     for skill, DC, roll, success in zip(df_detail.skillName.values,
                             df_detail.DC.values,
                             df_detail.roll.values,
                             df_detail.success.values):
-        objSkill = Skill.objects.get_or_create(name=skill)
+        progress += 1
+        if progress%10 == 0:
+            print(progress)
+        objSkill, _ = Skill.objects.get_or_create(name=skill)
         objLog = AdventureLog(
             adventure=objAdventure,
             characterprogression=objProgression,
@@ -67,7 +71,3 @@ def run():
             success=success
         )
         objLog.save()
-
-    print('cuymagico')
-    import IPython as ipy
-    ipy.embed()
